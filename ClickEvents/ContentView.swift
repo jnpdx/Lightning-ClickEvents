@@ -7,17 +7,17 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct Arrow: View {
+    var clicked: Bool
+    
     var body: some View {
-        HStack {
-            ToggleDemo()
-                .frame(maxWidth: .infinity)
-            Divider()
-            EventDemo()
-                .frame(maxWidth: .infinity)
-        }
-        .preferredColorScheme(.dark)
-        .frame(width: 800, height: 400)
+        Image(systemName: "arrow.right")
+            .resizable()
+            .frame(width: 150, height: 150)
+            .scaleEffect(clicked ? 1.5 : 1.0)
+            .foregroundColor(clicked ? .red : .white)
+            .shadow(color: clicked ? .purple : .clear, radius: 40)
+            .rotationEffect(clicked ? .degrees(360) : .degrees(0))
     }
 }
 
@@ -33,30 +33,16 @@ struct ToggleDemo: View {
                     }
                 }
         }
-        .padding()
-    }
-}
-
-struct ClickEvent: Identifiable, Equatable {
-    var id = UUID()
-    var timestamp = Date()
-}
-
-struct Arrow: View {
-    var clicked: Bool
-    
-    var body: some View {
-        Image(systemName: "arrow.right")
-            .resizable()
-            .frame(width: 150, height: 150)
-            .scaleEffect(clicked ? 1.5 : 1.0)
-            .foregroundColor(clicked ? .red : .white)
-            .shadow(color: clicked ? .purple : .clear, radius: 40)
-            .rotationEffect(clicked ? .degrees(360) : .degrees(0))
     }
 }
 
 struct EventDemo: View {
+    
+    struct ClickEvent: Identifiable, Equatable {
+        var id = UUID()
+        var timestamp = Date()
+    }
+    
     @State private var currentEvent: ClickEvent?
     
     var clicked: Bool {
@@ -81,7 +67,20 @@ struct EventDemo: View {
                     }
                 }
         }
-        .padding()
+    }
+}
+
+struct ContentView: View {
+    var body: some View {
+        HStack {
+            ToggleDemo()
+                .frame(maxWidth: .infinity)
+            Divider()
+            EventDemo()
+                .frame(maxWidth: .infinity)
+        }
+        .preferredColorScheme(.dark)
+        .frame(width: 800, height: 400)
     }
 }
 
